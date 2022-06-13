@@ -1,41 +1,25 @@
-const display = document.querySelector('.display')
+const calc = document.querySelector('.calc');
 
-//DIGITS
-document.querySelectorAll('.digits button') // we found digits with class selector
-    .forEach( button => button.addEventListener('click', digitPressed));
+const result = document.querySelector('#result');
 
-function digitPressed(ev){
-    const digit = ev.target.innerText;
-    display.value += digit;
-}
+calc.addEventListener('click', function (event) {
+    if (!event.target.classList.contains('calc_btn')) return;
+    
+    const value = event.target.innerText;
 
-//OPERS
-document.querySelectorAll('.opers button') // we found opers with class selector
-    .forEach( button => button.addEventListener('click', operPressed));
+    switch (value) {
+        case "C":
+            result.innerText = '';
+            break;
+        
+        case '=':
+            if (result.innerText.search(/[^0-9*/+-.]/mi) != -1) return;
+            result.innerText = eval(result.innerText).toFixed(2);
+            break;
+        
+        default:
+            result.innerText += value;
+    }
 
-function operPressed(ev){
-    const oper = ev.target.innerText;
-    display.value += oper; 
-}
 
-document.querySelector('.eq').addEventListener('click', eqPressed);       //event that ve can add to a func()
-
-function eqPressed(){
-    display.value = eval(display.value);
-}
-
-document.querySelector('.cancel').addEventListener('click', cPressed);
-function cPressed(){
-    display.value = null;
-};
-
-document.querySelector('.backarrow').addEventListener('click', backArrowPressed)
-
-function backArrowPressed(){
-    display.value -= digit;
-}
-
-document.querySelector('.root').addEventListener('click', rootPressed);
-function rootPressed(){
-
-}
+});
